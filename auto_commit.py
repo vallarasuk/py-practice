@@ -4,7 +4,7 @@ import datetime
 import os
 
 def run_command(command):
-    print(f"\n▶ Running: {command}")
+    print(f"\n▶ {command}")
     result = subprocess.run(command, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"❌ Error: {result.stderr}")
@@ -52,24 +52,14 @@ if __name__ == "__main__":
     branch_name = get_today_branch_name()
     print(f"🌿 Using branch: {branch_name}")
 
-    # Prompt for commit message choice
-    use_auto = input("Use auto-generated commit message? (y/n): ").strip().lower()
-    if use_auto == 'y':
-        commit_message = get_commit_message_from_files()
-    else:
-        commit_message = input("Enter your commit message: ").strip()
-        if not commit_message:
-            print("❌ Commit message cannot be empty.")
-            sys.exit(1)
+    # Use auto commit message without prompt
+    commit_message = get_commit_message_from_files()
+    print(f"📝 Commit message: {commit_message}")
 
+    # Run the automated steps
     checkout_or_create_branch(branch_name)
     add_commit_push(branch_name, commit_message)
+    merge_branch(branch_name, "main")
+    delete_branch(branch_name)
 
-    merge_choice = input("\nDo you want to merge this branch into 'main' now? (y/n): ").strip().lower()
-    if merge_choice == 'y':
-        merge_branch(branch_name, "main")
-        delete_choice = input("Delete the feature branch locally and remotely after merge? (y/n): ").strip().lower()
-        if delete_choice == 'y':
-            delete_branch(branch_name)
-
-    print("\n✅ All done successfully.")
+    print("\n✅ All done: Code committed, merged into main, pushed, and cleaned up.")
