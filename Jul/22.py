@@ -29,3 +29,12 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+def helloWorld(h, y):
+    print(f"Total = {h + y}")
+    
+
+helloWorld(2, 3)
+
