@@ -27,3 +27,7 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+
+
+
+source venv/bin/activate
